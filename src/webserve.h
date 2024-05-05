@@ -94,9 +94,8 @@ void setupWebserver(void)
 {
     Serial.begin(9600);
 
-    wifiMulti.addAP("sahil", "12345678"); // add Wi-Fi networks you want to connect to
+    wifiMulti.addAP("sahil", "12345678");
     wifiMulti.addAP("Sahil", "ssssssss");
-    wifiMulti.addAP("rexxx", "qqwweerrttyy12345");
 
     Serial.println("");
     Serial.println("Connecting ...");
@@ -133,7 +132,6 @@ void startClient(void)
 void handleControl()
 {
     const String args = server.arg("plain");
-    // Serial.print(args);
 
     if (args == "FORWARD")
     {
