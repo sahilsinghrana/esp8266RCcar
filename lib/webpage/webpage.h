@@ -1,3 +1,5 @@
+#ifndef webpage
+
 const char MAIN_page[] = R"=====(
 <!DOCTYPE html>
 <html lang="en">
@@ -469,3 +471,6 @@ const char MAIN_page[] = R"=====(
 </html>
 
 )=====";
+
+
+#endif
