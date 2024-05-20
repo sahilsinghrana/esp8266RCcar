@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, height=device-height, initial-scale=1.0"
+    />
     <title>raneX Car</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -31,6 +34,29 @@
       user-select: none;
     }
 
+    @media only screen and (orientation: portrait) {
+      html {
+        display: block;
+        -webkit-transform: rotate(90deg);
+        -moz-transform: rotate(90deg);
+        -o-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+        width: 100vh;
+        margin-top: 60%;
+      }
+    }
+    @media only screen and (orientation: landscape) {
+      html {
+        display: block;
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+    }
+
     h1 {
       font-family: "Jaini", system-ui;
       font-weight: 400;
@@ -46,11 +72,6 @@
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
-    }
-
-    form {
-      margin-left: 2em;
-      margin-top: 2em;
     }
 
     body {
@@ -96,10 +117,13 @@
     }
 
     .leftBtn.steerBtn:active {
+      background: red;
       box-shadow: inset -20px 0px 20px 12px var(--accent);
     }
 
     .rightBtn.steerBtn:active {
+      background: red;
+
       box-shadow: inset 20px 0px 20px 12px var(--accent);
     }
 
@@ -269,7 +293,7 @@
 
   <body>
     <div class="container">
-      <h1>CONTROLLER</h1>
+      <h1 onclick="toggleFullScreen();">CONTROLLER</h1>
       <div class="restContainer">
         <div class="steerBtns">
           <button
@@ -330,6 +354,14 @@
       return false;
     };
 
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+
     const leftBtn = document.getElementById("leftBtn");
     const rightBtn = document.getElementById("rightBtn");
     const straightBtn = document.getElementById("straightBtn");
@@ -349,69 +381,76 @@
     const forwardBtn = document.getElementById("forwardBtn");
     const backwardBtn = document.getElementById("backwardBtn");
 
+    const hapticFeedback = () => {
+      navigator.vibrate(500);
+    };
+
     function callCommandApi(command) {
       return fetch("/control", {
         method: "POST",
         body: command,
-      })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      }).then((res) => {
+        console.log(res);
+        hapticFeedback();
+      });
     }
 
     function steerStraight() {
-      backwardBtn.dataset.activated = "false";
-      callCommandApi("STRAIGHT");
+      return callCommandApi("STRAIGHT").then(() => {
+        backwardBtn.dataset.activated = "false";
+      });
     }
 
     function steerLeft() {
-      rightBtn.dataset.activated = "false";
-      callCommandApi("LEFT");
+      return callCommandApi("LEFT").then(() => {
+        rightBtn.dataset.activated = "false";
+      });
     }
 
     function steerRight() {
-      leftBtn.dataset.activated = "false";
-      callCommandApi("RIGHT");
+      return callCommandApi("RIGHT").then(() => {
+        leftBtn.dataset.activated = "false";
+      });
     }
 
     function moveForward() {
-      backwardBtn.dataset.activated = "false";
-      callCommandApi("FORWARD");
+      return callCommandApi("FORWARD").then(() => {
+        backwardBtn.dataset.activated = "false";
+      });
     }
 
     function moveBackward() {
       forwardBtn.dataset.activated = "false";
-      callCommandApi("BACKWARD");
+      return callCommandApi("BACKWARD").then(() => {});
     }
 
     function stopMovement() {
-      forwardBtn.dataset.activated = "false";
-      backwardBtn.dataset.activated = "false";
-      callCommandApi("STOP");
+      return callCommandApi("STOP").then(() => {
+        forwardBtn.dataset.activated = "false";
+        backwardBtn.dataset.activated = "false";
+      });
     }
 
     const eventHandlerPressed =
       (clickStartHandler, clickReleaseHandler, element) => (event) => {
         event.preventDefault();
-        if (isControllerLocked()) {
-          if (element.dataset.activated === "true") {
-            if (typeof clickReleaseHandler === "function") {
-              clickReleaseHandler(event);
-            }
-            element.dataset.activated = "false";
-            return;
-          } else {
-            element.dataset.activated = "true";
-          }
-        } else {
-          element.dataset.activated = "false";
-        }
 
         if (typeof clickStartHandler === "function") {
-          clickStartHandler(event);
+          clickStartHandler(event).then(() => {
+            if (isControllerLocked()) {
+              if (element.dataset.activated === "true") {
+                if (typeof clickReleaseHandler === "function") {
+                  clickReleaseHandler(event);
+                }
+                element.dataset.activated = "false";
+                return;
+              } else {
+                element.dataset.activated = "true";
+              }
+            } else {
+              element.dataset.activated = "false";
+            }
+          });
         }
       };
 
@@ -456,8 +495,8 @@
     }
 
     function initEventListners() {
-      addActionEvents(leftBtn, steerLeft, steerStraight);
-      addActionEvents(rightBtn, steerRight, steerStraight);
+      addActionEvents(leftBtn, steerLeft);
+      addActionEvents(rightBtn, steerRight);
 
       addActionEvents(forwardBtn, moveForward, stopMovement);
       addActionEvents(backwardBtn, moveBackward, stopMovement);

@@ -3,15 +3,18 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 #include <ESP8266WiFiMulti.h>
+#include <stdlib.h>
 
 #include <webpage.h>
 #include <motors.h>
+
+#define INTERNAL_LED 13
 
 ESP8266WiFiMulti wifiMulti; // Create an instance of the ESP8266WiFiMulti class, called 'wifiMulti'
 
 ESP8266WebServer server(80);
 
-void handleControl();
+// void handleControl();
 
 void redirectToHome()
 {
@@ -21,38 +24,46 @@ void redirectToHome()
 
 void handleForward()
 {
-    moveForward();
-    redirectToHome();
+    const String args = server.arg("plain");
+    int val = args.toInt();
+    moveForward(val);
+    server.send(200, "text/html", "FORWARD");
 }
 
 void handleBackward()
 {
-    moveBackward();
-    redirectToHome();
+    const String args = server.arg("plain");
+    int val = args.toInt();
+    moveBackward(val);
+    server.send(200, "text/html", "BACKWARD");
 }
 
 void handleLeft()
 {
-    redirectToHome();
-    turnLeft();
+    const String args = server.arg("plain");
+    int val = args.toInt();
+    turnLeft(val);
+    server.send(200, "text/html", "LEFT");
 }
 
 void handleStraight()
 {
     goStraight();
-    redirectToHome();
+    server.send(200, "text/html", "STRAIGHT");
 }
 
 void handleRight()
 {
-    redirectToHome();
-    turnRight();
+    const String args = server.arg("plain");
+    int val = args.toInt();
+    turnRight(val);
+    server.send(200, "text/html", "RIGHT");
 }
 
 void handleStop()
 {
     stopMotors();
-    redirectToHome();
+    server.send(200, "text/html", "STOP");
 }
 
 void handleRoot()
@@ -80,13 +91,13 @@ void handleNotFound()
 void setupRoutes()
 {
     server.on("/", handleRoot);
-    server.on("/control", HTTP_POST, handleControl);
-    server.on("/forward", handleForward);
-    server.on("/backward", handleBackward);
-    server.on("/stop", handleStop);
-    server.on("/left", handleLeft);
-    server.on("/right", handleRight);
-    server.on("/straight", handleStraight);
+    // server.on("/control", HTTP_POST, handleControl);
+    server.on("/forward", HTTP_POST, handleForward);
+    server.on("/backward", HTTP_POST, handleBackward);
+    server.on("/stop", HTTP_POST, handleStop);
+    server.on("/left", HTTP_POST, handleLeft);
+    server.on("/right", HTTP_POST, handleRight);
+    server.on("/straight", HTTP_POST, handleStraight);
     server.onNotFound(handleNotFound);
 }
 
@@ -96,6 +107,7 @@ void setupWebserver(void)
 
     wifiMulti.addAP("sahil", "12345678");
     wifiMulti.addAP("Sahil", "ssssssss");
+    wifiMulti.addAP("rexxx", "qqwweerrttyy12345");
 
     Serial.println("");
     Serial.println("Connecting ...");
@@ -106,6 +118,7 @@ void setupWebserver(void)
     }
     Serial.println('\n');
     Serial.print("Connected to ");
+    digitalWrite(INTERNAL_LED, HIGH);
     Serial.println(WiFi.SSID()); // Tell us what network we're connected to
     Serial.print("IP address:\t");
     Serial.println(WiFi.localIP()); // Send the IP address of the ESP8266 to the computer
@@ -129,42 +142,42 @@ void startClient(void)
     server.handleClient();
 }
 
-void handleControl()
-{
-    const String args = server.arg("plain");
+// void handleControl()
+// {
+//     const String args = server.arg("plain");
 
-    if (args == "FORWARD")
-    {
-        moveForward();
-        server.send(200, "text/plain", "Success -- FORWARD");
-    }
-    else if (args == "BACKWARD")
-    {
-        moveBackward();
-        server.send(200, "text/plain", "Success -- BACKWARD");
-    }
-    else if (args == "LEFT")
-    {
-        turnLeft();
-        server.send(200, "text/plain", "Success -- LEFT");
-    }
-    else if (args == "RIGHT")
-    {
-        turnRight();
-        server.send(200, "text/plain", "Success -- RIGHT");
-    }
-    else if (args == "STRAIGHT")
-    {
-        goStraight();
-        server.send(200, "text/plain", "Success -- STRAIGHT");
-    }
-    else if (args == "STOP")
-    {
-        stopMotors();
-        server.send(200, "text/plain", "Success -- STOP");
-    }
-    else
-    {
-        server.send(200, "text/plain", "FAILED to read command");
-    }
-}
+//     if (args == "FORWARD")
+//     {
+//         moveForward();
+//         server.send(200, "text/plain", "Success -- FORWARD");
+//     }
+//     else if (args == "BACKWARD")
+//     {
+//         moveBackward();
+//         server.send(200, "text/plain", "Success -- BACKWARD");
+//     }
+//     else if (args == "LEFT")
+//     {
+//         turnLeft();
+//         server.send(200, "text/plain", "Success -- LEFT");
+//     }
+//     else if (args == "RIGHT")
+//     {
+//         turnRight();
+//         server.send(200, "text/plain", "Success -- RIGHT");
+//     }
+//     else if (args == "STRAIGHT")
+//     {
+//         goStraight();
+//         server.send(200, "text/plain", "Success -- STRAIGHT");
+//     }
+//     else if (args == "STOP")
+//     {
+//         stopMotors();
+//         server.send(200, "text/plain", "Success -- STOP");
+//     }
+//     else
+//     {
+//         server.send(200, "text/plain", "FAILED to read command");
+//     }
+// }
