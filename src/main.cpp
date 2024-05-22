@@ -1,6 +1,8 @@
 #include <Arduino.h>
 
-#include <webserve.h>
+#include <WebController.h>
+
+#include "globals.h"
 
 void setup()
 {

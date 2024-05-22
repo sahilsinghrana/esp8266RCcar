@@ -1,0 +1,214 @@
+
+:root {
+    --th: 200;
+    --bgh: 42;
+
+    --primary: #f4f1deff;
+    --accent: #e07a5fff;
+    --dark: #3d405bff;
+    --success: #81b29aff;
+    --warning: #f2cc8fff;
+  }
+  * {
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  @media only screen and (orientation: portrait) {
+    html {
+      overflow: hidden;
+    }
+    .body {
+      position: relative;
+    }
+    .container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: rotate(90deg) translate(35dvw, 5dvh);
+      width: 80dvh;
+      height: 80dvw;
+    }
+
+    .restContainer {
+      /* background: red; */
+      width: 100vh;
+      height: 73vw;
+    }
+  }
+
+  h1 {
+    font-family: "Jaini", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 3rem;
+    font-weight: 900;
+    text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.6);
+    letter-spacing: 15px;
+  }
+
+  body {
+    background-color: var(--dark);
+    color: var(--accent);
+    text-align: center;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .restContainer {
+    --steerRangeHeight: 100px;
+    --steerRangeWidth: 199px;
+
+    --driveRangeHeight: 100%;
+    --driveRangeWidth: 80px;
+
+    --rangeThumbWidth: 15px;
+
+    background-color: rgba(41, 119, 106, 0.098);
+    padding: 5px;
+    width: 90vw;
+    height: 60vh;
+    max-height: 60vh;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    /* box-shadow: 0px -2px 40px 0px rgba(224, 122, 95, 1); */
+    border-radius: 12px;
+    animation: rotateShadow 7s ease-out alternate-reverse infinite;
+  }
+
+  .driveController {
+    display: flex;
+    height: 100%;
+  }
+
+  .stopBtn {
+    align-self: flex-end;
+    height: 50px;
+    width: 60px;
+    opacity: 0.8;
+    background-color: red;
+    color: white;
+    margin-right: 10px;
+    font-weight: 900;
+    clip-path: polygon(
+      30% 0%,
+      70% 0%,
+      100% 30%,
+      100% 70%,
+      70% 100%,
+      30% 100%,
+      0% 70%,
+      0% 30%
+    );
+  }
+
+  @keyframes rotateShadow {
+    0% {
+      box-shadow: 1px -3px 30px 0px rgba(224, 122, 95, 1);
+    }
+
+    25% {
+      box-shadow: 5px 0px 10px 0px rgba(224, 122, 95, 1);
+    }
+
+    50% {
+      box-shadow: 8px 10px 50px 0px rgba(224, 122, 95, 1);
+    }
+
+    100% {
+      box-shadow: 2px 3px 20px 0px rgba(224, 122, 95, 1);
+    }
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    outline: none;
+    /* overflow: hidden; */
+    border-radius: 16px;
+    background-color: #ccc;
+    outline: 6px solid rgba(241, 80, 5, 0.063);
+    touch-action: none;
+  }
+
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 30px;
+    background: var(--dark);
+    border-radius: 16px;
+  }
+  input[type="range"]::-moz-range-track {
+    height: 30px;
+    background: #ccc;
+    border-radius: 16px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 30px;
+    width: 50px;
+    background-color: #ff6c0a97;
+    border: 1px solid rgba(78, 34, 12, 0.345);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    height: 15px;
+    width: 15px;
+
+    background-color: #d75050;
+    border-radius: 50%;
+    border: 1px solid #f50;
+    box-shadow: -407px 0 0 400px #f50;
+  }
+
+  .steeringRange {
+    height: var(--steerRangeHeight);
+    width: var(--steerRangeWidth);
+  }
+
+  input[type="range"].steeringRange::-webkit-slider-runnable-track {
+    height: var(--steerRangeHeight);
+    margin: auto;
+  }
+
+  input[type="range"].steeringRange::-webkit-slider-thumb {
+    height: 100px;
+    width: var(--rangeThumbWidth);
+    background-color: #ff9100;
+    opacity: 0.8;
+    background-image: linear-gradient(
+      to right,
+      #ff0000,
+      #ff0000 5px,
+      #ff9100 5px,
+      #ff9100
+    );
+    border-radius: 12px;
+  }
+
+  .driveRange {
+    width: var(--driveRangeWidth);
+    height: var(--driveRangeHeight);
+    direction: rtl;
+    writing-mode: vertical-lr;
+    appearance: slider-vertical;
+    vertical-align: bottom;
+  }
+
+  input[type="range"].driveRange::-webkit-slider-thumb {
+    width: 100px;
+    height: var(--rangeThumbWidth);
+    opacity: 0.8;
+    border-radius: 12px;
+    background-color: #f79d31;
+    background-image: linear-gradient(0deg, #f79d31 50%, #ff0000 50%);
+  }

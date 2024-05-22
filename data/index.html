@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, height=device-height, initial-scale=1.0"
+    />
+    <title>raneX Car</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jaini&display=swap"
+      rel="stylesheet"
+    />
+  <script src="./script.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+ 
+
+  <body>
+    <div class="container">
+      <h1 onclick="toggleFullScreen();">CONTROLLER</h1>
+      <div class="restContainer">
+        <div>
+          <p id="steer">0</p>
+
+          <input
+            class="steeringRange"
+            id="steeringRange"
+            type="range"
+            min="-100"
+            max="100"
+          />
+        </div>
+        <div class="driveController">
+          <div style="align-self: flex-end; margin-right: 15px">
+            <p id="speed">0</p>
+            <button
+              class="stopBtn"
+              onclick="stopMovement()"
+              id="stopBtn"
+              type="button"
+            >
+              STOP
+            </button>
+          </div>
+          <input
+            orient="vertical"
+            id="driveRange"
+            class="driveRange"
+            type="range"
+            min="-100"
+            max="100"
+            step="2"
+          />
+        </div>
+      </div>
+    </div>
+  </body>
+
+</html>
