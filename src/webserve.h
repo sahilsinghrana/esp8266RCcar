@@ -4,6 +4,7 @@
 #include <ESP8266mDNS.h>
 #include <ESP8266WiFiMulti.h>
 #include <stdlib.h>
+#include <cmath>
 
 #include <webpage.h>
 #include <motors.h>
@@ -16,6 +17,11 @@ ESP8266WebServer server(80);
 
 // void handleControl();
 
+int getMaxOrValRounded(int val, int max)
+{
+    return abs(round(val * max / 100));
+}
+
 void redirectToHome()
 {
     server.sendHeader("Location", "/"); // Add a header to respond with a new location for the browser to go to the home page again
@@ -25,7 +31,7 @@ void redirectToHome()
 void handleForward()
 {
     const String args = server.arg("plain");
-    int val = args.toInt();
+    int val = getMaxOrValRounded(args.toInt(), 240);
     moveForward(val);
     server.send(200, "text/html", "FORWARD");
 }
@@ -33,7 +39,7 @@ void handleForward()
 void handleBackward()
 {
     const String args = server.arg("plain");
-    int val = args.toInt();
+    int val = getMaxOrValRounded(args.toInt(), 240);
     moveBackward(val);
     server.send(200, "text/html", "BACKWARD");
 }
@@ -41,7 +47,7 @@ void handleBackward()
 void handleLeft()
 {
     const String args = server.arg("plain");
-    int val = args.toInt();
+    int val = getMaxOrValRounded(args.toInt(), 240);
     turnLeft(val);
     server.send(200, "text/html", "LEFT");
 }
@@ -55,7 +61,7 @@ void handleStraight()
 void handleRight()
 {
     const String args = server.arg("plain");
-    int val = args.toInt();
+    int val = getMaxOrValRounded(args.toInt(), 240);
     turnRight(val);
     server.send(200, "text/html", "RIGHT");
 }

@@ -339,10 +339,10 @@ const char MAIN_page[] = R"=====(
       if (val < 0) {
         // Steering left
         steerLeft(val);
-        steerEl.innerText = `left-${val}`;
+        steerEl.innerText = `left-${Math.abs(val)}`;
       } else if (val > 0) {
         steerRight(Math.abs(val));
-        steerEl.innerText = `right-${Math.abs(val)}`;
+        steerEl.innerText = `right-${val}`;
       } else {
         steerEl.innerText = 0;
         steerStraight();
@@ -391,6 +391,5 @@ const char MAIN_page[] = R"=====(
     initEventListners();
   </script>
 </html>
-
 
 )=====";

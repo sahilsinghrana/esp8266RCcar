@@ -337,11 +337,11 @@
 
       if (val < 0) {
         // Steering left
-        steerLeft(val);
-        steerEl.innerText = `left-${val}`;
+        steerLeft(Math.abs(val));
+        steerEl.innerText = `left-${Math.abs(val)}`;
       } else if (val > 0) {
-        steerRight(Math.abs(val));
-        steerEl.innerText = `right-${Math.abs(val)}`;
+        steerRight(val);
+        steerEl.innerText = `right-${val}`;
       } else {
         steerEl.innerText = 0;
         steerStraight();
