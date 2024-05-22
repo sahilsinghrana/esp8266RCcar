@@ -1,9 +1,9 @@
 #ifndef MOTORS_H
 #define MOTORS_H
+#include <Arduino.h>
 
-#include "globals.h"
-
-class Motors {
+class Motors
+{
 public:
   static void moveForward(int val);
   static void moveBackward(int val);
@@ -11,6 +11,8 @@ public:
   static void turnRight(int val);
   static void goStraight();
   static void stopMotors();
+
+  static void setupMotorPins();
 };
 
 #endif
