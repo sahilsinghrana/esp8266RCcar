@@ -86,6 +86,26 @@ void WebController::handleNotFound()
   server.send(404, "text/plain", message);
 }
 
+bool isPlayingSong = false;
+
+void WebController::handleHonk()
+{ // If we are not playing something
+  if (isPlayingSong)
+  {
+    anyrtttl::nonblocking::stop();
+    isPlayingSong = false;
+    server.send(200, "text/html", "STOPPED_HONKING");
+  }
+  else
+  {
+    anyrtttl::nonblocking::begin(BUZZER_PIN, F("Mission Impossible:d=16,o=6,b=95:32d,32d#,32d,32d#,32d,32d#,32d,32d#,32d,32d,32d#,32e,32f,32f#,32g,g,8p,g,8p,a#,p,c7,p,g,8p,g,8p,f,p,f#,p,g,8p,g,8p,a#,p,c7,p,g,8p,g,8p,f,p,f#,p,a#,g,2d,32p,a#,g,2c#,32p,a#,g,2c,a#5,8c,2p,32p,a#5,g5,2f#,32p,a#5,g5,2f,32p,a#5,g5,2e,d#,8d"));
+
+    anyrtttl::nonblocking::play();
+    isPlayingSong = true;
+    server.send(200, "text/html", "HONKING");
+  }
+}
+
 void WebController::setupRoutes()
 {
   server.on("/", handleRoot);
@@ -96,6 +116,8 @@ void WebController::setupRoutes()
   server.on("/left", HTTP_POST, handleLeft);
   server.on("/right", HTTP_POST, handleRight);
   server.on("/straight", HTTP_POST, handleStraight);
+  server.on("/honk", HTTP_POST, handleHonk);
+
   server.onNotFound(handleNotFound);
 }
 
@@ -145,4 +167,25 @@ void WebController::setupWebserver()
   digitalWrite(LED_BUILTIN, HIGH);
 }
 
-void WebController::startClient(void) { server.handleClient(); }
+void WebController::startClient(void)
+{
+  server.handleClient();
+  if (isPlayingSong)
+  {
+    if (anyrtttl::nonblocking::done())
+    {
+      anyrtttl::nonblocking::stop();
+      isPlayingSong = false;
+    }
+    else
+    {
+      isPlayingSong = true;
+      anyrtttl::nonblocking::play();
+    }
+  }
+  else
+  {
+    isPlayingSong = false;
+    anyrtttl::nonblocking::stop();
+  }
+}

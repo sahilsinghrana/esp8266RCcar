@@ -7,6 +7,7 @@ WebController webController;
 void setup()
 {
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
   webController.setupWebserver();
 }
 

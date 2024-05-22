@@ -231,6 +231,14 @@ const char MAIN_page[] = R"=====(
       background-color: #f79d31;
       background-image: linear-gradient(0deg, #f79d31 50%, #ff0000 50%);
     }
+
+    .honk {
+      border-radius: 15px;
+      padding: 18px;
+      background-color: rgba(211, 211, 211, 0.346);
+      font-size: 0.8rem;
+      color: white;
+    }
   </style>
 
   <body>
@@ -247,6 +255,8 @@ const char MAIN_page[] = R"=====(
         <div>
           <p id="steer">0</p>
           <p id="speed">0</p>
+
+          <button id="honk" class="honk" onclick="honk()">Toggle Honk!!</button>
         </div>
         <div class="driveController">
           <button
@@ -303,6 +313,10 @@ const char MAIN_page[] = R"=====(
         console.log(res);
         hapticFeedback();
       });
+    }
+
+    function honk() {
+      callCommandApi("/honk");
     }
 
     function steerStraight() {

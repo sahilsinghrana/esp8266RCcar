@@ -8,8 +8,15 @@
 #include <WiFiClient.h>
 #include <stdlib.h>
 
+#include <pitches.h>
+#include <anyrtttl.h>
+#include <binrtttl.h>
+#include <pitches.h>
+
 #include "Motors.h"
 #include "webpage.h"
+
+#define BUZZER_PIN D8
 
 class WebController
 {
@@ -28,6 +35,8 @@ public:
     static void handleRoot();
     static void handleNotFound();
     static void setupRoutes();
+
+    static void handleHonk();
 };
 
 #endif
