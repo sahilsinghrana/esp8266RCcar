@@ -236,29 +236,26 @@
     <div class="container">
       <h1 onclick="toggleFullScreen();">CONTROLLER</h1>
       <div class="restContainer">
+        <input
+          class="steeringRange"
+          id="steeringRange"
+          type="range"
+          min="-100"
+          max="100"
+        />
         <div>
           <p id="steer">0</p>
-
-          <input
-            class="steeringRange"
-            id="steeringRange"
-            type="range"
-            min="-100"
-            max="100"
-          />
+          <p id="speed">0</p>
         </div>
         <div class="driveController">
-          <div style="align-self: flex-end; margin-right: 15px">
-            <p id="speed">0</p>
-            <button
-              class="stopBtn"
-              onclick="stopMovement()"
-              id="stopBtn"
-              type="button"
-            >
-              STOP
-            </button>
-          </div>
+          <button
+            class="stopBtn"
+            onclick="stopMovement()"
+            id="stopBtn"
+            type="button"
+          >
+            STOP
+          </button>
           <input
             orient="vertical"
             id="driveRange"
@@ -381,10 +378,12 @@
       steeringRange.onchange = handleSteerChange;
       steeringRange.oninput = handleSteerChange;
       steeringRange.ontouchend = handleSteerRelease;
+      steeringRange.onmouseup = handleSteerRelease;
 
       driveRange.onchange = handleDriveChange;
       driveRange.oninput = handleDriveChange;
       driveRange.ontouchend = handleDriveRelease;
+      driveRange.onmouseup = handleDriveRelease;
     }
 
     initEventListners();
