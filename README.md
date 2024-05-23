@@ -1,4 +1,4 @@
-# Esp32 RC Car
+# Esp8266 RC Car
 
 **Restored my old rusty RC car to a working condition, In the process i've used the following components:**
 
