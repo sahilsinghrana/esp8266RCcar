@@ -135,6 +135,7 @@ void WebController::setupWebserver()
 
   wifiMulti.addAP("sahil", "12345678");
   wifiMulti.addAP("Sahil", "ssssssss");
+  wifiMulti.addAP("rexxx", "qqwweerrttyy12345");
 
   Serial.println("");
   Serial.println("Connecting ...");
