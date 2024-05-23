@@ -1,4 +1,4 @@
-# RC Car Repair Project
+# Esp32 RC Car
 
 Welcome to the ESP32 RC Car Project repository! This project aims to document the process of fixing an old RC car. The RC car has been restored to working condition, thanks to the use of an ESP8266 board, L293D motor driver, and other components.
 
